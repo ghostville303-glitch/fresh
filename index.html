@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Fresh Fits — Streetwear & Merch</title>
+  <meta name="description" content="Fresh Fits — Colourful streetwear & merch. Browse our clothes collection." />
+  <style>
+    :root{
+      --bg-dark: #0b0c0f;
+      --muted: #c7ced3;
+      --glass: rgba(255,255,255,0.04);
+      --card-border: rgba(255,255,255,0.03);
+      --accent-white: #fff;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: var(--accent-white);
+      background:
+        radial-gradient(800px 400px at 10% 20%, rgba(255,255,255,0.02), transparent),
+        radial-gradient(900px 500px at 90% 80%, rgba(255,255,255,0.01), transparent),
+        conic-gradient(from 180deg at 50% 50%, rgba(4,6,8,0.9), rgba(8,4,12,0.9));
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.4;
+      padding-bottom:4rem;
+    }
+    .container{max-width:1100px;margin:0 auto;padding:1.25rem}
+
+    header.site-header{
+      position:sticky;top:0;z-index:40;
+      background: linear-gradient(180deg, rgba(8,8,10,0.6), rgba(8,8,10,0.35));
+      border-bottom: 1px solid rgba(255,255,255,0.02);
+      backdrop-filter: blur(6px);
+    }
+    .header-inner{display:flex;align-items:center;justify-content:space-between;padding:0.6rem 0}
+    .brand{font-weight:800;color:#fff;text-decoration:none;font-size:1.3rem;letter-spacing:0.6px}
+    .nav a{color:var(--muted);text-decoration:none;margin:0 0.75rem}
+    .nav a:hover{color:#fff}
+    .cart button{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:1rem}
+    #cart-count{background:#fff;color:#000;padding:0 6px;border-radius:12px;margin-left:6px;font-weight:800}
+
+    .hero{padding:3.2rem 0 1.2rem}
+    .hero-inner{text-align:center}
+    .hero h1{font-size:2.4rem;margin:0;color:#ffffff;letter-spacing:0.6px}
+    .tagline{color:var(--muted);margin:.5rem 0 1rem}
+    .cta{
+      display:inline-block;padding:.6rem 1rem;background:linear-gradient(90deg,#ff6b6b,#ffd166,#6bffb8,#6bb6ff);
+      background-size: 400% 400%;
+      animation: rainbowShift 8s linear infinite;
+      color:#0b0c0f;text-decoration:none;border-radius:12px;font-weight:800;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+    }
+    @keyframes rainbowShift{
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+    }
+
+    .section-header{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin:1.25rem 0}
+    .section-header h2{margin:0}
+    .products-grid{
+      display:grid;
+      gap:1rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      margin-bottom:2rem;
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid var(--card-border);
+      padding:0.5rem;border-radius:14px;overflow:hidden;position:relative;
+      transition: transform 180ms cubic-bezier(.2,.9,.2,1), box-shadow 180ms ease;
+      display:flex;flex-direction:column;height:100%;
+    }
+    .card:hover{transform: translateY(-8px);box-shadow:0 18px 40px rgba(3,6,9,0.6)}
+    .product-media{border-radius:10px;overflow:hidden;position:relative;height:170px;background:#111;display:flex;align-items:center;justify-content:center}
+    .product-media img{width:100%;height:100%;object-fit:cover;display:block;filter:contrast(0.98) saturate(1.05);transition:opacity .22s ease;opacity:1}
+    .fallback{
+      position:absolute;inset:0;display:none;align-items:center;justify-content:center;padding:12px;text-align:center;color:#021012;
+      font-weight:800;font-size:1.0rem;border-radius:10px;
+    }
+    .fallback .title{color:rgba(255,255,255,0.95);font-weight:800;font-size:1.05rem;text-shadow:0 6px 18px rgba(0,0,0,0.5)}
+    .meta{display:flex;justify-content:space-between;align-items:center;margin-top:.6rem;gap:.6rem}
+    .product-title{font-weight:700;font-size:0.95rem;color:#fff}
+    .category-badge{font-weight:800;font-size:0.75rem;padding:.25rem .5rem;border-radius:10px;background:rgba(0,0,0,0.35);color:rgba(255,255,255,0.95)}
+    .price{font-weight:900;background:linear-gradient(90deg, rgba(0,0,0,0.25), rgba(255,255,255,0.02));padding:.25rem .6rem;border-radius:8px;color:#fff}
+
+    .price-tag{
+      position:absolute;right:10px;top:10px;padding:.28rem .6rem;border-radius:10px;font-weight:900;color:#fff;
+      box-shadow:0 6px 18px rgba(0,0,0,0.45);backdrop-filter: blur(6px);
+    }
+
+    .card-actions{display:flex;gap:.5rem;margin-top:.7rem;justify-content:space-between;margin-top:auto}
+    .btn{padding:.55rem .75rem;border-radius:10px;border:none;background:#fff;color:#000;font-weight:800;cursor:pointer}
+    .btn.alt{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);font-weight:700}
+
+    .about,.contact{margin:2rem 0}
+    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+    .contact-info{background:var(--glass);padding:1rem;border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
+    .contact-form label{display:block;margin-bottom:.6rem;font-size:0.9rem;color:var(--muted)}
+    .contact-form input,.contact-form textarea{width:100%;padding:.6rem;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit;resize:vertical}
+
+    @keyframes blinkAnim{
+      0%{opacity:1}
+      50%{opacity:0}
+      100%{opacity:1}
+    }
+    .blink-email{
+      color:#fff;font-weight:900;text-decoration:none;
+      animation: blinkAnim 1.2s linear infinite;
+      text-shadow: 0 4px 22px rgba(255,255,255,0.08);
+    }
+
+    .site-footer{padding:1.25rem 0;margin-top:2rem;border-top:1px solid rgba(255,255,255,0.02)}
+    .footer-inner{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:0.9rem}
+
+    @media (max-width:900px){
+      .contact-grid{grid-template-columns:1fr}
+      .section-header{flex-direction:column;align-items:flex-start}
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#">Fresh Fits</a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="#shop">Shop</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="cart" aria-hidden="true">
+        <button id="cart-btn" title="Cart (not functional)">🛒 <span id="cart-count">0</span></button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-inner">
+      <h1>Fresh Fits</h1>
+      <p class="tagline">Colourful streetwear — tees, jeans, tracks, shorts & jumpers.</p>
+      <a class="cta" href="#shop">Explore the Drop</a>
+    </div>
+  </section>
+
+  <main class="container">
+    <section id="shop" class="shop">
+      <div class="section-header">
+        <h2>Clothes — Fresh Fits Collection</h2>
+        <p id="collection-count">Loading items...</p>
+      </div>
+      <div id="products" class="products-grid" aria-live="polite"></div>
+    </section>
+
+    <section id="about" class="about">
+      <h2>About Fresh Fits</h2>
+      <p>Fresh Fits is a small indie brand focused on bold colour, comfortable fits, and playful graphics.
+         We blend modern cut with expressive palettes — made for creators and curators of personal style.</p>
+    </section>
+
+    <section id="contact" class="contact">
+      <h2>Contact</h2>
+      <p>Got questions, wholesale inquiries, or collabs? Reach out — we'd love to hear from you.</p>
+
+      <div class="contact-grid">
+        <div class="contact-info">
+          <p><strong>Email</strong></p>
+          <p><a class="blink-email" id="main-email" href="mailto:fresh.fits.404@gmail.com">fresh.fits.404@gmail.com</a></p>
+
+          <p><strong>Phone</strong></p>
+          <p>+1 (555) 404-FFIT (placeholder)</p>
+
+          <p><strong>Address</strong></p>
+          <p>Online store — shipping worldwide</p>
+        </div>
+
+        <form id="contact-form" class="contact-form" aria-label="Contact form">
+          <label>
+            Your name
+            <input type="text" name="name" id="contact-name" placeholder="Jane Doe" required />
+          </label>
+
+          <label>
+            Your email
+            <input type="email" name="email" id="contact-email" placeholder="you@domain.com" required />
+          </label>
+
+          <label>
+            Message
+            <textarea name="message" id="contact-message" rows="5" placeholder="Hi Fresh Fits..." required></textarea>
+          </label>
+
+          <div class="form-actions" style="display:flex;gap:.6rem;margin-top:.5rem;">
+            <button type="submit" class="btn">Send (opens your mail client)</button>
+            <button type="button" id="copy-email" class="btn alt">Copy email</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>© <span id="year"></span> Fresh Fits</div>
+      <div class="footer-links">
+        <a href="#shop">Shop</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Build 50 product cards (mix of tees, jeans, tracks, shorts, jumpers)
+    document.addEventListener('DOMContentLoaded', () => {
+      const productsEl = document.getElementById('products');
+      const cartCountEl = document.getElementById('cart-count');
+      const yearEl = document.getElementById('year');
+      const collectionCount = document.getElementById('collection-count');
+      yearEl.textContent = new Date().getFullYear();
+
+      const categories = [
+        { key: 'tee', label: 'Tee', count: 20, queries: ['tshirt','graphic tshirt','streetwear tee','vintage tee'] },
+        { key: 'jeans', label: 'Jeans', count: 8, queries: ['jeans','denim jeans','selvedge denim','relaxed jeans'] },
+        { key: 'tracks', label: 'Tracks', count: 8, queries: ['track pants','joggers','tracksuit pants','sport pants'] },
+        { key: 'shorts', label: 'Shorts', count: 7, queries: ['shorts','denim shorts','cargo shorts','sport shorts'] },
+        { key: 'jumper', label: 'Jumper', count: 7, queries: ['jumper','sweater','crewneck sweater','knit jumper'] }
+      ];
+
+      function hueForIndex(i){ return (i * 22) % 360; } // sweep hues
+      function pickQuery(cat, idx){ const qlist = cat.queries; return `${qlist[idx % qlist.length]},streetwear,clothing`; }
+      function capitalize(s){ return s.charAt(0).toUpperCase() + s.slice(1) }
+      function sampleAdjective(i){
+        const words = ['Chromatic','Retro','Hyper','Neon','Cozy','Crisp','Aurora','Drift','Vivid','Muted','Solar','Lunar','Echo','Nomad','Pulse','Rift','Prism','Glide','Nova','Edge','Tone','Flux','Velvet','Terra','Zen','Arc','Fable'];
+        return words[i % words.length];
+      }
+      function dynamicPrice(categoryKey, idx){
+        switch(categoryKey){
+          case 'jeans': return (59.99 + (idx%4)*7).toFixed(2);
+          case 'tracks': return (39.99 + (idx%5)*6).toFixed(2);
+          case 'shorts': return (24.99 + (idx%3)*5).toFixed(2);
+          case 'jumper': return (49.99 + (idx%4)*8).toFixed(2);
+          default: return (19.99 + (idx%6)*3.5).toFixed(2);
+        }
+      }
+
+      // Create products
+      const products = [];
+      let id = 1;
+      categories.forEach(cat => {
+        for(let i=1; i<=cat.count; i++){
+          const idxGlobal = id - 1;
+          const name = `${capitalize(cat.label)} ${String(i).padStart(2,'0')} — ${sampleAdjective(idxGlobal)}`;
+          const price = dynamicPrice(cat.key, i);
+          const hue = hueForIndex(idxGlobal);
+          const imageQuery = pickQuery(cat, i-1);
+          // dynamic unsplash / source image (may vary in brightness)
+          const image = `https://source.unsplash.com/600x420/?${encodeURIComponent(imageQuery)}`;
+          products.push({ id, name, price, category: cat.label, hue, image });
+          id++;
+        }
+      });
+
+      collectionCount.textContent = `${products.length} colourful items — fall back shows vivid cards if remote images are dark`;
+
+      // Render cards with robust image fallback
+      products.forEach((p) => {
+        const card = document.createElement('article');
+        card.className = 'card';
+        card.setAttribute('aria-label', `${p.name} — $${p.price}`);
+
+        // Build DOM elements for fine control
+        const media = document.createElement('div');
+        media.className = 'product-media';
+        // image
+        const img = document.createElement('img');
+        img.loading = 'lazy';
+        img.src = p.image;
+        img.alt = p.name;
+        // fallback element (colorful gradient + title)
+        const fallback = document.createElement('div');
+        fallback.className = 'fallback';
+        // color gradient based on hue (use vivid gradients)
+        const overlay = `linear-gradient(135deg, hsla(${p.hue},85%,55%,1), hsla(${(p.hue+90)%360},85%,50%,1))`;
+        // choose a readable text color (white) on top of overlay; set background to overlay
+        fallback.style.background = overlay;
+        fallback.style.display = 'none';
+        fallback.innerHTML = `<div class="title">${escapeHtml(p.name)}</div>`;
+
+        // price tag with complementary hue for pop
+        const priceTag = document.createElement('div');
+        priceTag.className = 'price-tag';
+        const compHue = (p.hue + 160) % 360;
+        priceTag.style.background = `linear-gradient(90deg, hsla(${compHue},85%,38%,1), hsla(${(compHue+20)%360},85%,34%,1))`;
+        priceTag.textContent = `$${p.price}`;
+
+        // image load handling: hide fallback when image successfully loads
+        img.addEventListener('load', () => {
+          // image loaded: ensure it's visible and fallback hidden
+          img.style.display = '';
+          img.style.opacity = '1';
+          fallback.style.display = 'none';
+          // Optionally check naturalWidth/naturalHeight for very small images
+          if (img.naturalWidth < 50 || img.naturalHeight < 50) {
+            img.style.display = 'none';
+            fallback.style.display = 'flex';
+          }
+        });
+
+        // image error: hide image and show colorful fallback
+        img.addEventListener('error', () => {
+          img.style.display = 'none';
+          fallback.style.display = 'flex';
+        });
+
+        // Append and set the initial state: show fallback while loading to avoid blank area on slow connections
+        fallback.style.display = 'flex';
+        media.appendChild(img);
+        media.appendChild(fallback);
+        media.appendChild(priceTag);
+
+        // Meta and actions
+        const meta = document.createElement('div');
+        meta.className = 'meta';
+        meta.innerHTML = `
+          <div>
+            <div class="product-title">${escapeHtml(p.name)}</div>
+            <div style="font-size:0.78rem;color:var(--muted);margin-top:4px">${p.category}</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+            <div class="price">$${p.price}</div>
+            <div class="category-badge">${p.category}</div>
+          </div>
+        `;
+
+        const actions = document.createElement('div');
+        actions.className = 'card-actions';
+        actions.innerHTML = `<button class="btn add-btn" data-id="${p.id}">Add</button><button class="btn alt view-btn" data-id="${p.id}">View</button>`;
+
+        card.appendChild(media);
+        card.appendChild(meta);
+        card.appendChild(actions);
+        productsEl.appendChild(card);
+      });
+
+      // cart simulation & view button
+      let cartCount = 0;
+      productsEl.addEventListener('click', (e) => {
+        const addBtn = e.target.closest('.add-btn');
+        const viewBtn = e.target.closest('.view-btn');
+
+        if (addBtn) {
+          cartCount++;
+          cartCountEl.textContent = cartCount;
+          addBtn.textContent = 'Added';
+          addBtn.disabled = true;
+          setTimeout(()=>{ addBtn.textContent = 'Add'; addBtn.disabled=false }, 1200);
+        }
+        if (viewBtn) {
+          const id = Number(viewBtn.getAttribute('data-id'));
+          const product = products.find(x => x.id === id);
+          if (product) {
+            const html = productQuickPage(product);
+            const w = window.open();
+            if (w) {
+              w.document.write(html);
+              w.document.close();
+            } else {
+              alert(`${product.name}\nPrice: $${product.price}\nCategory: ${product.category}`);
+            }
+          }
+        }
+      });
+
+      // contact form behavior
+      const contactForm = document.getElementById('contact-form');
+      contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('contact-name').value.trim();
+        const email = document.getElementById('contact-email').value.trim();
+        const message = document.getElementById('contact-message').value.trim();
+
+        const mailTo = createMailto({
+          to: 'fresh.fits.404@gmail.com',
+          subject: `Fresh Fits contact from ${name || email || 'website'}`,
+          body: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
+        });
+
+        window.location.href = mailTo;
+      });
+
+      // copy email
+      document.getElementById('copy-email').addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText('fresh.fits.404@gmail.com');
+          const btn = document.getElementById('copy-email');
+          const prev = btn.textContent;
+          btn.textContent = 'Copied!';
+          setTimeout(()=> btn.textContent = prev, 1400);
+        } catch (err) {
+          alert('Could not copy automatically. Email: fresh.fits.404@gmail.com');
+        }
+      });
+
+      // Helper functions
+      function createMailto({to, subject, body}) {
+        const params = [
+          'subject=' + encodeURIComponent(subject || ''),
+          'body=' + encodeURIComponent(body || '')
+        ].join('&');
+        return `mailto:${to}?${params}`;
+      }
+      function escapeHtml(str){
+        return String(str).replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+      }
+
+      function productQuickPage(product){
+        const html = `<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"><title>${escapeHtml(product.name)}</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    body{margin:0;font-family:Inter,system-ui,Arial;background:#0b0c0f;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh}
+    .card{width:92%;max-width:720px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:20px;border-radius:14px;box-shadow:0 20px 50px rgba(0,0,0,0.7)}
+    img{width:100%;height:auto;border-radius:10px}
+    h1{margin:.6rem 0 0;font-size:1.4rem}
+    .meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+    .btn{margin-top:14px;padding:8px 14px;border-radius:10px;border:none;background:#fff;color:#000;font-weight:800;cursor:pointer}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <img src="${product.image}" alt="${escapeHtml(product.name)}">
+    <h1>${escapeHtml(product.name)}</h1>
+    <div class="meta">
+      <div>${product.category}</div>
+      <div style="font-weight:900">$${product.price}</div>
+    </div>
+    <p style="color:#c7ced3;margin-top:12px">This is a demo product preview. Use the button to contact us about this item.</p>
+    <div>
+      <button class="btn" onclick="location.href='mailto:fresh.fits.404@gmail.com?subject=${encodeURIComponent('Order inquiry: '+product.name)}'">Contact to buy</button>
+      <button class="btn" style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:#fff;margin-left:8px" onclick="window.close()">Close</button>
+    </div>
+  </div>
+</body>
+</html>`;
+        return html;
+      }
+
+    });
+  </script>
+</body>
+</html>
